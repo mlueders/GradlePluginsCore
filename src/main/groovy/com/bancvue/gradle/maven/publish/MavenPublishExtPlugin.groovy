@@ -16,7 +16,7 @@
 package com.bancvue.gradle.maven.publish
 
 import com.bancvue.gradle.GradlePluginMixin
-import com.bancvue.gradle.JavaExtPlugin
+import com.bancvue.gradle.java.JavaExtPlugin
 import com.bancvue.gradle.maven.MavenRepositoryProperties
 import groovy.util.logging.Slf4j
 import org.gradle.api.Plugin

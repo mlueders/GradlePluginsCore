@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.bancvue.gradle
+package com.bancvue.gradle.java
 
 import com.bancvue.gradle.categories.ProjectCategory
 import org.gradle.api.Plugin

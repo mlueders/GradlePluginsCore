@@ -15,6 +15,7 @@
  */
 package com.bancvue.gradle
 
+import com.bancvue.gradle.java.JavaExtPlugin
 import com.bancvue.gradle.license.LicenseExtPlugin
 import com.bancvue.gradle.support.ProjectSupportPlugin
 import com.bancvue.gradle.test.ComponentTestPlugin
