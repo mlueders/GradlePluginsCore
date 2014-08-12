@@ -38,7 +38,7 @@ class ProjectFileSystem extends TestFile {
 	TestFile emptyClassFile(String filePath, String content = "") {
 		TestFile classFile = file(filePath)
 		String className = FilenameUtils.getBaseName(classFile.name)
-		classFile << """class ${className} {
+		classFile << """public class ${className} {
 ${content}
 }
 """

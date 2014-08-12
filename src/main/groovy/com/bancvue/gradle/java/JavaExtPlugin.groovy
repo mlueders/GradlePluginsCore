@@ -16,21 +16,33 @@
 package com.bancvue.gradle.java
 
 import com.bancvue.gradle.categories.ProjectCategory
+import javax.inject.Inject
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.internal.file.FileResolver
 import org.gradle.api.tasks.javadoc.Javadoc
+import org.gradle.internal.reflect.Instantiator
 
 public class JavaExtPlugin implements Plugin<Project> {
 
 	static final String PLUGIN_NAME = 'com.bancvue.java-ext'
 
 	private Project project
+	private Instantiator instantiator
+	private FileResolver fileResolver
+
+	@Inject
+	public JavaExtPlugin(Instantiator instantiator, FileResolver fileResolver) {
+		this.instantiator = instantiator
+		this.fileResolver = fileResolver
+	}
 
 	public void apply(Project project) {
 		this.project = project
 		project.apply(plugin: 'java')
 		addSourcesJarTask()
 		addJavadocJarTask()
+		createSourceSetExtExtension()
 	}
 
 	private void addSourcesJarTask() {
@@ -49,6 +61,11 @@ public class JavaExtPlugin implements Plugin<Project> {
 				from javadocTask.destinationDir
 			}
 		}
+	}
+
+	private DefaultSourceSetExtContainer createSourceSetExtExtension() {
+		project.extensions.create(DefaultSourceSetExtContainer.NAME, DefaultSourceSetExtContainer, project,
+				project.sourceSets, fileResolver, instantiator)
 	}
 
 }
