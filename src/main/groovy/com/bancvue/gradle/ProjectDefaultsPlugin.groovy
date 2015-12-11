@@ -59,6 +59,21 @@ class ProjectDefaultsPlugin implements Plugin<Project> {
 	private void setCompileMemorySettings(BaseForkOptions forkOptions) {
 		forkOptions.memoryInitialSize = forkOptions.memoryInitialSize ?: defaultsProperties.minHeapSize
 		forkOptions.memoryMaximumSize = forkOptions.memoryMaximumSize ?: defaultsProperties.maxHeapSize
+		if (shouldSetMaxPermSize(forkOptions)) {
+			forkOptions.jvmArgs << "-XX:MaxPermSize=${defaultsProperties.maxPermSize}".toString()
+		}
+	}
+
+	private boolean shouldSetMaxPermSize(def jvmArgContainer) {
+		isMaxPermSizeAvailable() && isMissingJvmArg(jvmArgContainer, "-XX:MaxPermSize")
+	}
+
+	private boolean isMaxPermSizeAvailable() {
+		try {
+			return ((defaultsProperties.javaVersion as float) < 1.8)
+		} catch (Exception ex) {
+			return false
+		}
 	}
 
 	private boolean isMissingJvmArg(def jvmArgContainer, String jvmArg) {
@@ -69,6 +84,9 @@ class ProjectDefaultsPlugin implements Plugin<Project> {
 		project.tasks.withType(Test) { Test test ->
 			test.minHeapSize = test.minHeapSize ?: defaultsProperties.minTestHeapSize
 			test.maxHeapSize = test.maxHeapSize ?: defaultsProperties.maxTestHeapSize
+			if (shouldSetMaxPermSize(test)) {
+				test.jvmArgs("-XX:MaxPermSize=${defaultsProperties.maxTestPermSize}".toString())
+			}
 		}
 	}
 
