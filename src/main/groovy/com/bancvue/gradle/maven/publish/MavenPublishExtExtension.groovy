@@ -242,25 +242,24 @@ class MavenPublishExtExtension {
 		private void attachDependenciesToMavenPublication(ExtendedPublication extendedPublication, MavenPublication mavenPublication) {
 			Set runtimeDependencies = dependencyResolver.getRuntimeDependencies(extendedPublication)
 
-			mavenPublication.pom.withXml {
-				asNode().children().last() + {
-					dependencies {
-						runtimeDependencies.each { Dependency aDependency ->
-							List<Exclusion> exclusionList = dependencyResolver.getDependencyExclusions(aDependency)
+			log.info("Attaching dependencies to maven publication ${mavenPublication.name}")
+			applyConfigurePomClosureToMavenPublication(mavenPublication) {
+				dependencies {
+					runtimeDependencies.each { Dependency aDependency ->
+						List<Exclusion> exclusionList = dependencyResolver.getDependencyExclusions(aDependency)
 
-							dependency {
-								groupId aDependency.group
-								artifactId aDependency.name
-								version aDependency.version
-								scope "runtime"
+						dependency {
+							groupId aDependency.group
+							artifactId aDependency.name
+							version aDependency.version
+							scope "runtime"
 
-								if (exclusionList) {
-									exclusions {
-										exclusionList.each { Exclusion item ->
-											exclusion {
-												groupId item.groupId
-												artifactId item.artifactId
-											}
+							if (exclusionList) {
+								exclusions {
+									exclusionList.each { Exclusion item ->
+										exclusion {
+											groupId item.groupId
+											artifactId item.artifactId
 										}
 									}
 								}

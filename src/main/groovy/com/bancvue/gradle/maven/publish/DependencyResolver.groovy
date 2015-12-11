@@ -39,7 +39,7 @@ class DependencyResolver {
 
 		excludeRules.findAll { ExcludeRule excludeRule ->
 			excludeRule.group || excludeRule.module
-		}.collectAll { ExcludeRule excludeRule ->
+		}.collect { ExcludeRule excludeRule ->
 			new Exclusion(excludeRule)
 		}
 	}
