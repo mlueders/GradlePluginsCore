@@ -30,6 +30,8 @@ class MavenPublishExtPluginIntegrationSpecification extends AbstractPluginIntegr
 
 	private void setupLocalMavenRepoAndApplyPlugin() {
 		buildFile << """
+ext.repositoryUsername=''
+ext.repositoryPassword=''
 ext.repositoryReleaseUrl='${mavenRepo.toURI()}'
 ext.artifactId='artifact'
 

@@ -44,6 +44,8 @@ repositories {
 allprojects {
 	apply plugin: 'com.bancvue.project-defaults' // set jar baseName to artifactId
 
+	ext.repositoryUsername=''
+	ext.repositoryPassword=''
 	ext.repositoryReleaseUrl='${mavenRepo.toURI()}'
 	group = 'group'
 	version = '1.0'

@@ -25,6 +25,8 @@ class MavenExtPluginIntegrationSpecification extends AbstractPluginIntegrationSp
 	void setup() {
 		localMavenRepo = mkdir("build/maven-repo")
 		buildFile << """
+ext.repositoryUsername=''
+ext.repositoryPassword=''
 ext.repositoryReleaseUrl='${localMavenRepo.toURI()}'
 ext.repositorySnapshotUrl='${localMavenRepo.toURI()}'
 ext.artifactId='artifact'

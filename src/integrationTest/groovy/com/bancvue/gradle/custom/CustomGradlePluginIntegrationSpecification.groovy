@@ -42,6 +42,8 @@ ext {
     customGradleArtifactId = "gradle-bancvue"
     customGradleScriptResourcePath = "custom.gradle"
 
+	repositoryUsername=''
+	repositoryPassword=''
 	repositoryReleaseUrl='${mavenRepo.toURI()}'
 }
 
