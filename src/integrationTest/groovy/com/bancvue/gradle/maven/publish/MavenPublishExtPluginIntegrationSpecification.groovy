@@ -134,6 +134,38 @@ publishing_ext {
 		assertArchiveBuiltAndUploadedToMavenRepo("artifact-custom", "sources")
 	}
 
+	def "should respect artifactId defined in extended publication block"() {
+		given:
+		emptyClassFile("src/custom/java/CustomClass.java")
+		setupLocalMavenRepoAndApplyPlugin()
+		buildFile << """
+configurations {
+	custom
+}
+
+sourceSets {
+	custom {
+		java {
+			srcDir 'src/custom/java'
+		}
+	}
+}
+
+publishing_ext {
+	publication("custom") {
+		artifactId = "custom-override"
+	}
+}
+"""
+
+		when:
+		run("publish")
+
+		then:
+		assertArchiveBuiltAndUploadedToMavenRepo("custom-override")
+		assertArchiveBuiltAndUploadedToMavenRepo("custom-override", "sources")
+	}
+
 	def "should use custom source set and configuration if configured"() {
 		given:
 		emptyClassFile("src/other/java/MainClass.java")

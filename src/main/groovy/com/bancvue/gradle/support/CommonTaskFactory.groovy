@@ -38,15 +38,15 @@ class CommonTaskFactory {
 		this.namer = namer
 	}
 
-	Jar createJarTask() {
-		createAndConfigureJarTask(namer.jarTaskName, sourceSet.output)
+	Jar createJarTask(String artifactId = null) {
+		createAndConfigureJarTask(namer.jarTaskName, artifactId, sourceSet.output)
 	}
 
-	Jar createSourcesJarTask() {
-		createAndConfigureJarTask(namer.sourcesJarTaskName, sourceSet.allSource, "sources")
+	Jar createSourcesJarTask(String artifactId = null) {
+		createAndConfigureJarTask(namer.sourcesJarTaskName, artifactId, sourceSet.allSource, "sources")
 	}
 
-	private Jar createAndConfigureJarTask(String jarTaskName, Object sourcePath, String classifierString = null) {
+	private Jar createAndConfigureJarTask(String jarTaskName, String artifactId, Object sourcePath, String classifierString = null) {
 		String postfix = namer.sourceSetNameAppendix
 		String jarContent = classifierString ? classifierString : "classes"
 		Jar jarTask = project.tasks.create(jarTaskName, Jar)
@@ -56,7 +56,9 @@ class CommonTaskFactory {
 			if (classifierString) {
 				classifier = classifierString
 			}
-			if (postfix) {
+			if (artifactId) {
+				baseName = artifactId
+			} else if (postfix) {
 				baseName = "${baseName}-${postfix}"
 			}
 			from sourcePath
@@ -64,12 +66,12 @@ class CommonTaskFactory {
 		jarTask
 	}
 
-	Jar createJavadocJarTask() {
+	Jar createJavadocJarTask(String artifactId = null) {
 		Javadoc javadocTask = project.tasks.findByName(namer.javadocTaskName)
 		if (javadocTask == null) {
 			javadocTask = createJavadocTask()
 		}
-		Jar javadocJarTask = createAndConfigureJarTask(namer.javadocJarTaskName, javadocTask.destinationDir, "javadoc")
+		Jar javadocJarTask = createAndConfigureJarTask(namer.javadocJarTaskName, artifactId, javadocTask.destinationDir, "javadoc")
 		javadocJarTask.dependsOn { javadocTask }
 		javadocJarTask
 	}
