@@ -17,12 +17,17 @@ apply plugin: 'com.jfrog.bintray'
 
 repositories {
 	jcenter()
+	repositories {
+		maven {
+			url "https://plugins.gradle.org/m2/"
+		}
+	}
 }
 
 dependencies {
 	compile localGroovy()
 	compile gradleApi()
-	compile "nl.javadude.gradle.plugins:license-gradle-plugin:0.11.0"
+	compile "gradle.plugin.nl.javadude.gradle.plugins:license-gradle-plugin:0.13.1"
 
 	mainTestCompile('org.spockframework:spock-core:1.0-groovy-2.4') {
 		exclude group: 'org.codehaus.groovy'
@@ -36,13 +41,10 @@ check.dependsOn integrationTest
 license {
 	ext.name = "BancVue, LTD"
 	skipExistingHeaders true
+	// exclude the test kit source which was copied from a different project (https://github.com/alkemist/gradle-test-kit)
+	// and has it's own license
+	excludes(["licenses/*", "org/gradle/testkit/**", "**/*.properties"])
 }
-
-[licenseMain, licenseFormatMain]*.exclude "licenses/*"
-// exclude the test kit source which was copied from a different project (https://github.com/alkemist/gradle-test-kit)
-// and has it's own license
-[licenseMainTest, licenseFormatMainTest]*.exclude "org/gradle/testkit/**"
-
 
 publishing_ext {
 	publication("mainTest")

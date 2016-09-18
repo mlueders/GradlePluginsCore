@@ -1,10 +1,15 @@
 repositories {
-	mavenCentral()
+    jcenter()
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
 }
 
 dependencies {
     compile gradleApi()
-	compile 'nl.javadude.gradle.plugins:license-gradle-plugin:0.9.0'
+    compile "gradle.plugin.nl.javadude.gradle.plugins:license-gradle-plugin:0.13.1"
 }
 
 sourceSets {
